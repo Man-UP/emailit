@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!python3.2
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import argparse
@@ -17,7 +17,9 @@ deprecated_args = {'-b' : ('1.1', 'Body is now a positional argument'), \
         '-s' : ('1.1', 'Subject is now a positional argument'), \
         '--subject' : ('1.1', 'Subject is now a positional argument'), \
         '-t' : ('1.1', 'To is now a positional argument'), \
-        '--to' : ('1.1', 'To is now a positional argument')}
+        '--to' : ('1.1', 'To is now a positional argument'), \
+        '-o' : ('1.2', 'Emails are no longer copied online'), \
+        '--online-index' : ('1.2', 'Emails are no longer copied online')}
 
 class DeprecatedArg(argparse.Action):
 
@@ -39,17 +41,8 @@ TEMPLATE_IMAGE = '''
 <img src="http://man-up.appspot.com/img/{image_name}" style="max-width: 560px; border: none; font-size: 14px; font-weight: bold; height: auto; line-height: 100%; outline: none; text-decoration: none; text-transform: capitalize; display: inline;">
 '''
 
-TEMPLATE_ONLINE_VERSION = '''
-<td valign="top" width="190">
-    <div style="color: #505050; font-family: Arial; font-size: 10px; line-height: 100%; text-align: left;">
-        Not displaying correctly?<br>
-        <a href="http://man-up.appspot.com/messages/{index}" target="_blank"   style="color: #336699; font-weight: normal; text-decoration: underline;">View browser</a>.
-    </div>
-</td>
-'''
-
 def make_email(from_, subject, body_path, facebook_event, image_name,
-        image_link, online_index):
+        image_link):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
     msg['From'] = from_
@@ -73,17 +66,10 @@ def make_email(from_, subject, body_path, facebook_event, image_name,
         image = ''
 
 
-    if online_index is not None:
-        online_version = TEMPLATE_ONLINE_VERSION.format(
-            index=online_index)
-    else:
-        online_version = ''
-
     html = TEMPLATE.format(
         body=markdown.markdown(body_plain),
         image=image,
-        facebook_event=facebook_event,
-        online_version=online_version)
+        facebook_event=facebook_event)
 
     msg.attach(MIMEText(html, 'html'))
 
@@ -101,11 +87,11 @@ def main(argv=None):
     ap.add_argument('-F', '--facebook-event', type=int, help='A facebook event ID for the meeting (i.e. the number after "sk=group_" in the URL')
     ap.add_argument('-i', '--image-name', type=str, help='The location of the image file to display')
     ap.add_argument('-l', '--image-link', type=str, help='A URL for the image file, which will be presented as a hyperlink (requires --image-name)')
-    ap.add_argument('-o', '--online-index', type=int, help='The index on the Man-UP website for this event (e.g. http://man-up.appspot.com/messages/<online_index>)')
-    ap.add_argument('--version', action='version', version='%(prog)s 1.1')
+    ap.add_argument('--version', action='version', version='%(prog)s 1.2')
     ap.add_argument('-b', '--body', action=DeprecatedArg)
     ap.add_argument('-s', '--subject', action=DeprecatedArg)
     ap.add_argument('-t', '--to', action=DeprecatedArg)
+    ap.add_argument('-o', '--online-index', action=DeprecatedArg)
     args = ap.parse_args(args=argv[1:])
 
 
@@ -114,8 +100,7 @@ def main(argv=None):
         for to in args.to:
             print('%s...' % to, end='')
             msg = make_email(args.from_, args.subject, args.body,
-                args.facebook_event, args.image_name, args.image_link,
-                args.online_index)
+                args.facebook_event, args.image_name, args.image_link)
             msg['To'] = to
             msg_str = msg.as_string()
             if not args.dry_run:

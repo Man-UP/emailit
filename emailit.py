@@ -12,6 +12,23 @@ import markdown
 def resolve_path(origin_path, relative_path):
     return os.path.join(os.path.dirname(origin_path), relative_path)
 
+#Dictionary to specify deprecated args. Keys are argument strings, values are tuples of (version string, error message).
+deprecated_args = {'-b' : ('1.1', 'Body is now a positional argument'), \
+        '--body' : ('1.1', 'Body is now a positional argument'), \
+        '-s' : ('1.1', 'Subject is now a positional argument'), \
+        '--subject' : ('1.1', 'Subject is now a positional argument'), \
+        '-t' : ('1.1', 'To is now a positional argument'), \
+        '--to' : ('1.1', 'To is now a positional argument')}
+
+class DeprecatedArg(argparse.Action):
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        if (option_string in deprecated_args):
+            info = deprecated_args[option_string]
+            print('%r is deprecated as of EmailIT %s, %s' % (option_string, info[0], info[1]), file=sys.stderr)
+        else:
+            print('%r is deprecated for no known reason' % option_string, file=sys.stderr)
+
 with open(resolve_path(__file__, 'template.html')) as template_file:
     TEMPLATE = template_file.read()
 
@@ -76,16 +93,20 @@ def make_email(from_, subject, body_path, facebook_event, image_name,
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    ap = argparse.ArgumentParser(fromfile_prefix_chars='@')
-    ap.add_argument('-b', '--body', required=True, type=argparse.FileType('r'), help='A text file containing the desired body of the event email.')
+    ap = argparse.ArgumentParser(fromfile_prefix_chars='@', description='EmailIT automatically produces and sends emails, using a supplied body text, subject, and receipient list.', prog='EmailIT')
+    ap.add_argument('body', type=argparse.FileType('r'), help='A text file containing the desired body of the event email.')
+    ap.add_argument('subject', type=str, help='Email Subject')
+    ap.add_argument('to', nargs='+', type=str, help='Email receipients. For a file of receipients, use @address_file')
     ap.add_argument('-d', '--dry-run', action='store_true', help='A flag to indicate that no action should be taken (TODO: Write the email etc. to a file?)')
     ap.add_argument('-f', '--from', dest='from_', required=True, type=str, help='The source email address for the email.')
     ap.add_argument('-F', '--facebook-event', type=int, help='A facebook event ID for the meeting (i.e. the number after "sk=group_" in the URL')
     ap.add_argument('-i', '--image-name', type=str, help='The location of the image file to display')
     ap.add_argument('-l', '--image-link', type=str, help='A URL for the image file, which will be presented as a hyperlink (requires --image-name)')
     ap.add_argument('-o', '--online-index', type=int, help='The index on the Man-UP website for this event (e.g. http://man-up.appspot.com/messages/<online_index>)')
-    ap.add_argument('-s', '--subject', required=True, type=str, help='Email Subject')
-    ap.add_argument('-t', '--to', nargs='+', required=True, type=str, help='Email receipients as a list (e.g. `cat addresses`... TODO: Is this the way to send to multiple receipients? :S)')
+    ap.add_argument('--version', action='version', version='%(prog)s 1.1')
+    ap.add_argument('-b', '--body', action=DeprecatedArg)
+    ap.add_argument('-s', '--subject', action=DeprecatedArg)
+    ap.add_argument('-t', '--to', action=DeprecatedArg)
     args = ap.parse_args(args=argv[1:])
 
 

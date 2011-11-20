@@ -38,8 +38,8 @@ def make_email(from_, subject, body_path, facebook_event, image_name,
     msg['Subject'] = subject
     msg['From'] = from_
 
-    with open(body_path) as body_file:
-        body_plain = body_file.read()
+    #with open(body_path) as body_file:
+    body_plain = body_path.read()
 
     msg.attach(MIMEText(body_plain))
 
@@ -77,15 +77,15 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
     ap = argparse.ArgumentParser(fromfile_prefix_chars='@')
-    ap.add_argument('-b', '--body', required=True)
-    ap.add_argument('-d', '--dry-run', action='store_true')
-    ap.add_argument('-f', '--from', dest='from_', required=True)
-    ap.add_argument('-F', '--facebook-event', type=int)
-    ap.add_argument('-i', '--image-name')
-    ap.add_argument('-l', '--image-link')
-    ap.add_argument('-o', '--online-index', type=int)
-    ap.add_argument('-s', '--subject', required=True)
-    ap.add_argument('-t', '--to', nargs='+', required=True)
+    ap.add_argument('-b', '--body', required=True, type=argparse.FileType('r'), help='A text file containing the desired body of the event email.')
+    ap.add_argument('-d', '--dry-run', action='store_true', help='A flag to indicate that no action should be taken (TODO: Write the email etc. to a file?)')
+    ap.add_argument('-f', '--from', dest='from_', required=True, type=str, help='The source email address for the email.')
+    ap.add_argument('-F', '--facebook-event', type=int, help='A facebook event ID for the meeting (i.e. the number after "sk=group_" in the URL')
+    ap.add_argument('-i', '--image-name', type=str, help='The location of the image file to display')
+    ap.add_argument('-l', '--image-link', type=str, help='A URL for the image file, which will be presented as a hyperlink (requires --image-name)')
+    ap.add_argument('-o', '--online-index', type=int, help='The index on the Man-UP website for this event (e.g. http://man-up.appspot.com/messages/<online_index>)')
+    ap.add_argument('-s', '--subject', required=True, type=str, help='Email Subject')
+    ap.add_argument('-t', '--to', nargs='+', required=True, type=str, help='Email receipients as a list (e.g. `cat addresses`... TODO: Is this the way to send to multiple receipients? :S)')
     args = ap.parse_args(args=argv[1:])
 
 
@@ -105,6 +105,7 @@ def main(argv=None):
                 print('done')
             else:
                 print('skipped')
+    args.body.close()
 
     return 0
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import print_function
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import argparse

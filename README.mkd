@@ -44,18 +44,16 @@ Create a Facebook event on the facebook group
 Send a test email
 -----------------
 - The basic outline
-
-
-    emailit -f <FACEBOOK_EVENT_ID> -i <IMAGE_URL> -l <LINK_TO_FACEBOOK_EVENT>
-    <recipient> <your_cs_username> "<SUBJECT LINE>" <EMAIL_BODY_FILE>
+    emailit -f [FACEBOOK_EVENT_ID] -i [IMAGE_URL] -l [LINK_TO_FACEBOOK_EVENT]
+    [recipient] [your_cs_username] "[SUBJECT LINE]" [EMAIL_BODY_FILE]
 
 
 - You probably want to test it first so run something like 
 
     emailit -f 245828098826625 -i
     http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l
-    http://www.facebook.com/events/245828098826625 <YOUR_CS_USERNAME>
-    <YOUR_CS_USERNAME>
+    http://www.facebook.com/events/245828098826625 [YOUR_CS_USERNAME]
+    [YOUR_CS_USERNAME]
     "[Man-UP] The Punisher getting you out of bed and into Kilburn"
     ~/email-body.txt
 

@@ -1,0 +1,81 @@
+emailit
+=======
+A mass spammer for computer science manchester
+
+How to emailit
+==============
+(Note that this is pretty specific to sending a Man-UP related email)
+
+Put the body of the email in a text file in your cs home directory
+------------------------------------------------------------------
+- Preferably write the email in
+  [markdown](http://daringfireball.net/projects/markdown/basics)
+
+Upload the image to man-up.appspot.com
+--------------------------------------
+- Go to http://man-up.appspot.com and click 'log in/register' in the top right.
+
+- Once you have logged in you should now see an 'admin' button in the top right
+  corner, if you cannot you need to be made an admin, email me at
+  lloyd.w.henning@gmail.com and I can sort this out. 
+
+- Clicking the admin button will take you to the admin page where you can
+  create a news post, fill it with the same content you will put in the body of
+  the email.
+
+- On this page you can upload the image and use the url for the email. 
+
+- You can get the url of the image by viewing the news post (on the homepage)
+  and copying the image url.
+
+Create a Facebook event on the facebook group 
+---------------------------------------------
+- (leave a message on there if you need to become an admin). 
+
+- At the time of writing the create event button is the cog icon in the right
+  corner of the group page.
+
+- Upload the image as the event image and put the body of the email in as the
+  details.
+
+- Once you have created the event copy the event id, which is the big number in
+  the url after "event/" and before the final "/", e.g., 245828098826625
+
+Send a test email
+-----------------
+- The basic outline
+
+
+    emailit -f <FACEBOOK_EVENT_ID> -i <IMAGE_URL> -l <LINK_TO_FACEBOOK_EVENT>
+    <recipient> <your_cs_username> "<SUBJECT LINE>" <EMAIL_BODY_FILE>
+
+
+- You probably want to test it first so run something like 
+
+    emailit -f 245828098826625 -i
+    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l
+    http://www.facebook.com/events/245828098826625 <YOUR_CS_USERNAME>
+    <YOUR_CS_USERNAME>
+    "[Man-UP] The Punisher getting you out of bed and into Kilburn"
+    ~/email-body.txt
+
+- And then check it all works ok
+
+- By sourcing /home/S08/suttonp8/man-up you will now have the environmental
+  variable $list_nerds which is the mailing list for Man-UP.
+
+- BEWARE, IT IS BEYOND POWERFUL, DON'T BE THAT PERSON WHO HAS TO SEND THE SPAM
+  MAIL MORE THAN ONCE.
+
+- So, as an example of its use:
+
+
+    emailit -f 245828098826625 -i
+    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l
+    http://www.facebook.com/events/245828098826625 @$lists_nerds henninl8
+    "[Man-UP] The Punisher getting you out of bed and into Kilburn"
+    ~/email-body.txt
+
+Anymore queries ask lloyd.w.henning@gmail.com or petersutton2009@gmail.com. Or
+both.
+

@@ -6,6 +6,19 @@ How to emailit
 ==============
 (Note that this is pretty specific to sending a Man-UP related email)
 
+On a CS machine source the Man-UP dotfiles
+--------------------------
+Simply enter
+
+    /home/S08/suttonp8/man-up
+
+Now it is advisable that you add the following line to your .my_bashrc.linux
+
+    . man-up
+
+This does the same as the previous command (sort of) and will allow you to get
+all the super cool Man-UP stuff.
+
 Put the body of the email in a text file in your cs home directory
 ------------------------------------------------------------------
 - Preferably write the email in

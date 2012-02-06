@@ -58,15 +58,15 @@ Send a test email
 -----------------
 The basic outline
 
-    emailit -f [FACEBOOK_EVENT_ID] -i [IMAGE_URL] -l [LINK_TO_FACEBOOK_EVENT]
+    emailit -f [FACEBOOK_EVENT_ID] -i [IMAGE_URL] -l [LINK_TO_FACEBOOK_EVENT] \
     [recipient] [your_cs_username] "[SUBJECT LINE]" [EMAIL_BODY_FILE]
 
 You probably want to test it first so run something like 
 
-    emailit -f 245828098826625 -i
-    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l
-    http://www.facebook.com/events/245828098826625 [YOUR_CS_USERNAME]
-    [YOUR_CS_USERNAME] "[Man-UP] The Punisher getting you out of bed and into
+    emailit -f 245828098826625 -i \
+    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l \
+    http://www.facebook.com/events/245828098826625 [YOUR_CS_USERNAME] \
+    [YOUR_CS_USERNAME] "[Man-UP] The Punisher getting you out of bed and into \
     Kilburn" ~/email-body.txt
 
 And then check it all works ok
@@ -79,10 +79,10 @@ variable $list_nerds which is the mailing list for Man-UP.
 
 So, as an example of its use:
 
-    emailit -f 245828098826625 -i
-    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l
-    http://www.facebook.com/events/245828098826625 @$lists_nerds henninl8
-    "[Man-UP] The Punisher getting you out of bed and into Kilburn"
+    emailit -f 245828098826625 -i \
+    http://man-up.appspot.com/img?img_id=agZtYW4tdXByDQsSBUltYWdlGPrGBQw -l \
+    http://www.facebook.com/events/245828098826625 @$lists_nerds henninl8 \
+    "[Man-UP] The Punisher getting you out of bed and into Kilburn" \
     ~/email-body.txt
 
 Anymore queries ask lloyd.w.henning@gmail.com or petersutton2009@gmail.com. Or
